@@ -1,0 +1,74 @@
+<div class="app-container">
+  <div class="card">
+    <!-- Header con icono -->
+    <div class="header">
+      <div class="icon-circle">🛡️</div>
+      <h1>Control de Acceso</h1>
+      <p class="subtitle">Ingrese el DNI o matrícula para verificar</p>
+    </div>
+
+    <!-- Buscador -->
+    <div class="search-section">
+      <input 
+        type="text" 
+        [(ngModel)]="busqueda"
+        placeholder="12345678"
+        class="search-input"
+        (keyup.enter)="buscar()"
+      />
+      <button (click)="buscar()" class="search-btn">🔍</button>
+    </div>
+
+    <!-- Datos de prueba -->
+    <div class="test-data" *ngIf="!resultadoBusqueda">
+      <p><strong>Datos de prueba:</strong></p>
+      <p>DNI: <span (click)="setBusqueda('12345678')" class="link">12345678</span> o Matrícula: <span (click)="setBusqueda('ABC-123')" class="link">ABC-123</span></p>
+      <p>DNI: <span (click)="setBusqueda('87654321')" class="link">87654321</span> o Matrícula: <span (click)="setBusqueda('XYZ-789')" class="link">XYZ-789</span></p>
+    </div>
+
+    <!-- Resultado: AUTORIZADO -->
+    <div *ngIf="resultadoBusqueda && resultadoBusqueda.validado" class="result-card success">
+      <div class="result-header success-header">
+        <span class="checkmark">✓</span>
+        <span class="status-text">AUTORIZADO</span>
+      </div>
+      <div class="result-body">
+        <div class="avatar-circle"></div>
+        <p class="label">NOMBRE COMPLETO</p>
+        <p class="name">{{ resultadoBusqueda.usuario.nombre }}</p>
+        
+        <div class="info-grid">
+          <div class="info-item">
+            <p class="label">DNI</p>
+            <p class="value">{{ resultadoBusqueda.usuario.identidad }}</p>
+          </div>
+          <div class="info-item">
+            <p class="label">MATRÍCULA</p>
+            <p class="value">{{ resultadoBusqueda.usuario.matricula }}</p>
+          </div>
+        </div>
+
+        <div class="department">
+          <p class="label">DEPARTAMENTO</p>
+          <p class="value">Administración</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resultado: NO AUTORIZADO -->
+    <div *ngIf="resultadoBusqueda && !resultadoBusqueda.validado" class="result-card error">
+      <div class="result-header error-header">
+        <span class="cross">✕</span>
+        <span class="status-text">NO AUTORIZADO</span>
+      </div>
+      <div class="result-body">
+        <p class="error-message">El DNI o matrícula "{{ busqueda }}" no se encuentra autorizado para ingresar.</p>
+      </div>
+    </div>
+
+    <!-- Botón nueva búsqueda -->
+    <div *ngIf="resultadoBusqueda" class="action-button">
+      <a (click)="nuevaBusqueda()" class="link-button">Nueva búsqueda</a>
+    </div>
+  </div>
+</div>
